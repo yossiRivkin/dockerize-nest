@@ -1,0 +1,50 @@
+version: '3'
+services:
+  backend:
+    build: ./
+    container_name: nestjs_api
+    environment:
+      - PORT=3000
+      - MONGO_URI=mongodb://mongo_db:27017/wa_manager
+    ports:
+      - '3000:3000'
+    depends_on:
+      - database
+    networks:
+      - nestjs_network
+  database:
+    image: mongo
+    container_name: mongo_db
+    ports:
+      - '27017:27017'
+    volumes:
+      - './mongedb-backup:/data/db'
+    networks:
+      - nestjs_network
+  
+networks:
+  nestjs_network:
+    driver: bridge 
+#   postgres:
+#     image: postgres
+#     container_name: postgres_db
+#     ports:  
+#       - "5432:5432"
+#     environment:
+#       POSTGRES_USER: root
+#       POSTGRES_PASSWORD: root
+#       POSTGRES_DB: wa_manager
+#     volumes:
+#      - data:/var/lib/postgresql/data
+
+#   pgadmin:
+#     image: dpage/pgadmin4
+#     container_name: pgadmin
+#     ports:
+#       - "5050:80"
+#     environment:
+#       PGADMIN_DEFAULT_EMAIL: yyr736@gmail.com
+#       PGADMIN_DEFAULT_PASSWORD: root
+
+# volumes:
+#   data:
